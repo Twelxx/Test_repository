@@ -56,10 +56,47 @@ if __name__ == "__main__":
     t_min = 0.001
     k_max = 1000000
 
-    salesman = TravelingSalesman(num_cities, min_coord, max_coord) #создание класса коммивояжёра
-    print(f"Initial Order: {salesman.S}\nInitial Distance: {salesman.calculate_distance(salesman.S):.6f}")
+    data=[
+        {"num_cities" : 20, "min_coord" : 0, "max_coord" : 10},
+        {"num_cities" : 30, "min_coord" : 0, "max_coord" : 13},
+        {"num_cities" : 35, "min_coord" : 0, "max_coord" : 20},
+    ]
 
-    for i in range(3):
-        total_distance, iterations, optimal_order = salesman.minimize_path(t_max, t_min, k_max)
-        print(f"Iteration {i+1} - Total Distance: {total_distance:.6f}, Iterations: {iterations}, Optimal order: {optimal_order}")
-        salesman.plot_path(optimal_order)
+    from tabulate import tabulate
+    for wyhod in data:
+        result, res, ser=[],[],[]
+        kros=["Набор данных", "Количество городов", "Min координата", "Max координата"]
+        tabul_kros=[]
+        for i, data in enumerate(wyhod):
+            tabul_kros.append([i+1, wyhod['num_cities'], wyhod['min_coord'], wyhod['max_coord']])
+        print(tabulate(tabul_kros,kros, tablefmt='grid'))
+    
+        for cto in range(5):
+            salesman=TravelingSalesman(**wyhod)
+            print(f'Запуск {cto + 1}:')
+            for i in range(3):
+                max_distansiya, iterations, norm_order=salesman.minimize_path(t_max, t_min, k_max)
+                print(f"      Итерация:{i + 1} - Максимальная дистанция:{max_distansiya:.3f}, Iterations: {iterations}")
+                result.append(max_distansiya)
+                res.append(result)
+                ser.append(res)
+
+    print("\n Вывод всех данных:")
+    for i, res in enumerate(ser):
+        print(f"Набор данных {i + 1}:")
+        for j, result in enumerate(res):
+            print(f"  Запуск{j+1}: {result}")
+
+
+
+
+
+
+
+    #salesman = TravelingSalesman(num_cities, min_coord, max_coord) #создание класса коммивояжёра
+    #print(f"Initial Order: {salesman.S}\nInitial Distance: {salesman.calculate_distance(salesman.S):.6f}")
+
+    #for i in range(3):
+        #total_distance, iterations, optimal_order = salesman.minimize_path(t_max, t_min, k_max)
+        #print(f"Iteration {i+1} - Total Distance: {total_distance:.6f}, Iterations: {iterations}, Optimal order: {optimal_order}")
+        #salesman.plot_path(optimal_order)
